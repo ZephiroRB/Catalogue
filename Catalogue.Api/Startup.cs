@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Catalogue.Core.Interfaces;
+using Catalogue.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +28,8 @@ namespace Catalogue.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            //Dependencies
+            services.AddTransient<IArticleRepository, ArticleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
