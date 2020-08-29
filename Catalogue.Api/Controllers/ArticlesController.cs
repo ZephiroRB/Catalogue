@@ -11,11 +11,11 @@ namespace Catalogue.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticleController : ControllerBase
+    public class ArticlesController : ControllerBase
     {
         private readonly IArticleRepository _articleRepository;
 
-        public ArticleController(IArticleRepository articleRepository)
+        public ArticlesController(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
 
@@ -24,10 +24,19 @@ namespace Catalogue.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetArticles()
         {
-            var artilces = await _articleRepository.GetArticles();
+            var articles = await _articleRepository.GetArticles();
 
-            return Ok(artilces);
+            return Ok(articles);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetArticle(int id)
+        {
+            var article = await _articleRepository.GetArticle(id);
+
+            return Ok(article);
+        }
+
 
 
     }
