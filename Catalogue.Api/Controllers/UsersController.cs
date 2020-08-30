@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,17 +24,25 @@ namespace Catalogue.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var Users = await _UserRepository.GetUsers();
+            var users = await _UserRepository.GetUsers();
 
-            return Ok(Users);
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var User = await _UserRepository.GetUser(id);
+            var user = await _UserRepository.GetUser(id);
 
-            return Ok(User);
+            return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> addUser(User user)
+        {
+            await _UserRepository.addUser(user);
+
+            return Ok(user);
         }
     }
 }
