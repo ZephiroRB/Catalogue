@@ -33,5 +33,12 @@ namespace Catalogue.Infrastructure.Repositories
             return user;
         }
 
+        public async Task addUser(User user)
+        {
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }

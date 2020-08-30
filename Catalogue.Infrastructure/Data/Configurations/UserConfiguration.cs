@@ -11,34 +11,24 @@ namespace Catalogue.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasIndex(e => e.Token)
-                    .HasName("UserToken")
-                    .IsUnique();
+            builder.ToTable("users");
 
-            builder.Property(e => e.Id)
-                .HasColumnName("id")
-                .ValueGeneratedNever();
+            builder.HasIndex(e => e.Token)
+                .HasName("index_users_on_token");
+
+            builder.Property(e => e.Id).HasColumnName("id");
 
             builder.Property(e => e.CreatedAt)
                 .HasColumnName("created_at")
                 .HasColumnType("timestamp(6) without time zone");
 
-            builder.Property(e => e.Email)
-                .HasColumnName("email")
-                .HasMaxLength(255);
-
             builder.Property(e => e.Password)
                 .HasColumnName("password")
-                .HasMaxLength(255);
-
-            builder.Property(e => e.Slug)
-                .HasColumnName("slug")
-                .HasMaxLength(255);
+                .HasColumnType("character varying");
 
             builder.Property(e => e.Token)
-                .IsRequired()
                 .HasColumnName("token")
-                .HasMaxLength(100);
+                .HasColumnType("character varying");
 
             builder.Property(e => e.UpdatedAt)
                 .HasColumnName("updated_at")
@@ -46,7 +36,7 @@ namespace Catalogue.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Username)
                 .HasColumnName("username")
-                .HasMaxLength(255);
+                .HasColumnType("character varying");
         }
     }
 }

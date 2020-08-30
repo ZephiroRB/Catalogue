@@ -12,5 +12,7 @@ namespace Catalogue.Core.Interfaces
 
         Task<User> GetUser(int id);
 
+        Task addUser(User user);
+
     }
 }
