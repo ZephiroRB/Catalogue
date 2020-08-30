@@ -41,7 +41,7 @@ namespace Catalogue.Infrastructure.Data.Configurations
             builder.Property(e => e.UserId).HasColumnName("user_id");
 
             builder.HasOne(d => d.User)
-                .WithMany(p => p.Article)
+                .WithMany(p => p.Articles)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_rails_3d31dad1cc");
