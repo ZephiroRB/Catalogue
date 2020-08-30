@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Catalogue.Core.DTOs;
 using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
@@ -15,16 +16,24 @@ namespace Catalogue.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userRepository.GetUsers();
+            
+            /* With AutoMapper*/
+            var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);
+            
+            /*
+            without AutoMapper
             var usersDTO = users.Select(u => new UserDTO
             {
                 Id = u.Id,
@@ -32,7 +41,7 @@ namespace Catalogue.Api.Controllers
                 Token = u.Token,
                 UpdatedAt = u.UpdatedAt,
                 CreatedAt = u.CreatedAt
-            });
+            });*/
 
             return Ok(usersDTO);
         }
@@ -41,6 +50,12 @@ namespace Catalogue.Api.Controllers
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userRepository.GetUser(id);
+
+            /* With AutoMapper*/
+            var userDTO = _mapper.Map<UserDTO>(user);
+
+            /*
+            without AutoMapper
             var userDTO = new UserDTO
             {
                 Id = user.Id,
@@ -48,7 +63,7 @@ namespace Catalogue.Api.Controllers
                 Token = user.Token,
                 UpdatedAt = user.UpdatedAt,
                 CreatedAt = user.CreatedAt
-            };
+            };*/
 
             return Ok(userDTO);
         }
@@ -56,13 +71,18 @@ namespace Catalogue.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> addUser(UserDTO userDTO)
         {
+            /* With AutoMapper*/
+            var user = _mapper.Map<User>(userDTO);
+
+            /*
+            without AutoMapper
             var user = new User
             {
                 Username = userDTO.Username,
                 Token = userDTO.Token,
                 UpdatedAt = userDTO.UpdatedAt,
                 CreatedAt = userDTO.CreatedAt
-            };
+            };*/
 
             await _userRepository.addUser(user);
             return Ok(user);
