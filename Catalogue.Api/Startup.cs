@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Catalogue.Core.Interfaces;
 using Catalogue.Infrastructure.Data;
 using Catalogue.Infrastructure.Repositories;
@@ -29,6 +30,7 @@ namespace Catalogue.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
 
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
