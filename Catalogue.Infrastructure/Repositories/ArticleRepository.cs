@@ -34,6 +34,11 @@ namespace Catalogue.Infrastructure.Repositories
             return article;
         }
 
+        public async Task addArticle(Article article)
+        {
+            _context.Article.Add(article);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

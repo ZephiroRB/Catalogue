@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
 using Catalogue.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -37,7 +38,13 @@ namespace Catalogue.Api.Controllers
             return Ok(article);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> addArticle(Article article)
+        {
+            await _articleRepository.addArticle(article);
 
+            return Ok(article);
+        }
 
     }
 }

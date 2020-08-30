@@ -12,5 +12,7 @@ namespace Catalogue.Core.Interfaces
         Task<IEnumerable<Article>> GetArticles();
 
         Task<Article> GetArticle(int id);
+
+        Task addArticle(Article article);
     }
 }
