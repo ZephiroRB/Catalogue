@@ -8,7 +8,7 @@ namespace Catalogue.Core.Entities
 
         public User()
         {
-            Article = new HashSet<Article>();
+            Articles = new HashSet<Article>();
         }
 
         public long Id { get; set; }
@@ -18,6 +18,6 @@ namespace Catalogue.Core.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public virtual ICollection<Article> Article { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
     }
 }
