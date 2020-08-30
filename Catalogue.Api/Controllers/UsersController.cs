@@ -13,35 +13,32 @@ namespace Catalogue.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _UserRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(IUserRepository UserRepository)
+        public UsersController(IUserRepository userRepository)
         {
-            _UserRepository = UserRepository;
+            _userRepository = userRepository;
 
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _UserRepository.GetUsers();
-
+            var users = await _userRepository.GetUsers();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _UserRepository.GetUser(id);
-
+            var user = await _userRepository.GetUser(id);
             return Ok(user);
         }
 
         [HttpPost]
         public async Task<IActionResult> addUser(User user)
         {
-            await _UserRepository.addUser(user);
-
+            await _userRepository.addUser(user);
             return Ok(user);
         }
     }
