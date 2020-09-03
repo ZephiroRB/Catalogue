@@ -10,9 +10,13 @@ namespace Catalogue.Core.Interfaces
     {
         Task<IEnumerable<User>> GetUsers();
 
-        Task<User> GetUser(int id);
+        Task<User> GetUser(long id);
 
         Task addUser(User user);
+
+        Task<bool> updateUser(User user);
+
+        Task<bool> deleterUser(long id);
 
     }
 }
