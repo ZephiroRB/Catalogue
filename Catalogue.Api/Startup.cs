@@ -6,6 +6,7 @@ using AutoMapper;
 using Catalogue.Core.Interfaces;
 using Catalogue.Infrastructure.Data;
 using Catalogue.Infrastructure.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,9 +35,20 @@ namespace Catalogue.Api
             services.AddControllers();
 
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            //Dependencies
+            // registers Repositories
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+
+            //Dependencies
+            services.AddMvc(setup =>
+            {
+
+            }).AddFluentValidation(options =>
+            {
+                options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +59,7 @@ namespace Catalogue.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
