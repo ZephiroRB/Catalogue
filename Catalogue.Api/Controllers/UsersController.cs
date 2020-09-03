@@ -28,10 +28,10 @@ namespace Catalogue.Api.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userRepository.GetUsers();
-            
+
             /* With AutoMapper*/
             var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);
-            
+
             /*
             without AutoMapper
             var usersDTO = users.Select(u => new UserDTO
@@ -47,7 +47,7 @@ namespace Catalogue.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser(long id)
         {
             var user = await _userRepository.GetUser(id);
 
@@ -87,5 +87,37 @@ namespace Catalogue.Api.Controllers
             await _userRepository.addUser(user);
             return Ok(user);
         }
+
+
+        [HttpPut]
+        public async Task<IActionResult> updateUser(long id, UserDTO userDTO)
+        {
+            /* With AutoMapper*/
+            var user = _mapper.Map<User>(userDTO);
+            user.Id = id;
+            /*
+            without AutoMapper
+            var user = new User
+            {
+                Id = id,
+                Username = userDTO.Username,
+                Token = userDTO.Token,
+                UpdatedAt = userDTO.UpdatedAt,
+                CreatedAt = userDTO.CreatedAt
+            };*/
+
+            await _userRepository.updateUser(user);
+            return Ok(user);
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> deleteUser(long id)
+        {
+            var result = await _userRepository.deleterUser(id);
+            return Ok(result);
+        }
+
+
     }
 }
