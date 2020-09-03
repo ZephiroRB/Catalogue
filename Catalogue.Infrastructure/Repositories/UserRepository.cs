@@ -26,7 +26,7 @@ namespace Catalogue.Infrastructure.Repositories
             return users;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(long id)
         {
             var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -38,6 +38,30 @@ namespace Catalogue.Infrastructure.Repositories
             _context.User.Add(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> updateUser(User user)
+        {
+            var currentUser = await GetUser(user.Id);
+
+            currentUser.Username = user.Username;
+            currentUser.Password = user.Password;
+
+            int rowsAffected = await _context.SaveChangesAsync();
+
+            return rowsAffected > 0;
+        }
+
+        public async Task<bool> deleterUser(long id)
+        {
+            var currentUser = await GetUser(id);
+
+            _context.User.Remove(currentUser);
+
+            int rowsAffected = await _context.SaveChangesAsync();
+
+            return rowsAffected > 0;
+        }
+
 
 
     }
