@@ -16,7 +16,7 @@ namespace Catalogue.Infrastructure.Repositories
 
         public ArticleRepository(CatalogueContext context)
         {
-             _context = context;
+            _context = context;
 
         }
 
@@ -27,7 +27,7 @@ namespace Catalogue.Infrastructure.Repositories
             return articles;
         }
 
-        public async Task<Article> GetArticle(int id)
+        public async Task<Article> GetArticle(long id)
         {
             var article = await _context.Article.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -40,5 +40,30 @@ namespace Catalogue.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+
+        public async Task<bool> updateArticle(Article article)
+        {
+            var currentArticle = await GetArticle(article.Id);
+
+            currentArticle.Title = article.Title;
+            currentArticle.Description = article.Description;
+            currentArticle.UserId = article.UserId;
+
+
+            int rowsAffected = await _context.SaveChangesAsync();
+
+            return rowsAffected > 0;
+        }
+
+        public async Task<bool> deleterArticle(long id)
+        {
+            var currentArticle = await GetArticle(id);
+
+            _context.Article.Remove(currentArticle);
+
+            int rowsAffected = await _context.SaveChangesAsync();
+
+            return rowsAffected > 0;
+        }
     }
 }
