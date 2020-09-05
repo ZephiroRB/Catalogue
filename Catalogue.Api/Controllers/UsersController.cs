@@ -111,7 +111,7 @@ namespace Catalogue.Api.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> deleteUser(long id)
         {
             var result = await _userRepository.deleterUser(id);
