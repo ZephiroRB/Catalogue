@@ -9,10 +9,17 @@ namespace Catalogue.Core.Interfaces
 {
     public interface IArticleRepository
     {
+      
+
         Task<IEnumerable<Article>> GetArticles();
 
-        Task<Article> GetArticle(int id);
+        Task<Article> GetArticle(long id);
 
         Task addArticle(Article article);
+
+        Task<bool> updateArticle(Article article);
+
+        Task<bool> deleterArticle(long id);
+
     }
 }
