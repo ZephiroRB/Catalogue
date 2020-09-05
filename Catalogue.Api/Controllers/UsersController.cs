@@ -15,19 +15,19 @@ namespace Catalogue.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userRepository.GetUsers();
+            var users = await _userService.GetUsers();
 
             /* With AutoMapper*/
             var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);
@@ -49,7 +49,7 @@ namespace Catalogue.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(long id)
         {
-            var user = await _userRepository.GetUser(id);
+            var user = await _userService.GetUser(id);
 
             /* With AutoMapper*/
             var userDTO = _mapper.Map<UserDTO>(user);
@@ -84,7 +84,7 @@ namespace Catalogue.Api.Controllers
                 CreatedAt = userDTO.CreatedAt
             };*/
 
-            await _userRepository.addUser(user);
+            await _userService.addUser(user);
             return Ok(user);
         }
 
@@ -106,7 +106,7 @@ namespace Catalogue.Api.Controllers
                 CreatedAt = userDTO.CreatedAt
             };*/
 
-            await _userRepository.updateUser(user);
+            await _userService.updateUser(user);
             return Ok(user);
         }
 
@@ -114,7 +114,7 @@ namespace Catalogue.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteUser(long id)
         {
-            var result = await _userRepository.deleterUser(id);
+            var result = await _userService.deleterUser(id);
             return Ok(result);
         }
 

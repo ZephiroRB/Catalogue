@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Catalogue.Core.Interfaces;
+using Catalogue.Core.Services;
 using Catalogue.Infrastructure.Data;
 using Catalogue.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
@@ -35,6 +36,10 @@ namespace Catalogue.Api
             services.AddControllers();
 
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            // registers Services
+            services.AddTransient <IUserService, UserService>();
+
             // registers Repositories
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
