@@ -43,7 +43,8 @@ namespace Catalogue.Api
             // registers Repositories
             // services.AddTransient<IArticleRepository, ArticleRepository>();
             //services.AddTransient<IUserRepository, UserRepository>();
-            services.AddScoped(typeof(IRepository<>),typeof(BaseRepository<>) );
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Dependencies
             services.AddMvc(setup =>
