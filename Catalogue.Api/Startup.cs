@@ -38,11 +38,12 @@ namespace Catalogue.Api
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             // registers Services
-            services.AddTransient <IUserService, UserService>();
+            services.AddTransient<IUserService, UserService>();
 
             // registers Repositories
-            services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            // services.AddTransient<IArticleRepository, ArticleRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+            services.AddScoped(typeof(IRepository<>),typeof(BaseRepository<>) );
 
             //Dependencies
             services.AddMvc(setup =>
