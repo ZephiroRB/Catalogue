@@ -7,38 +7,37 @@ namespace Catalogue.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<User> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IRepository<User> repository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-        }
-
-        public async Task addUser(User user)
-        {
-            await _repository.Add(user);
-        }
-
-        public async Task<bool> deleterUser(long id)
-        {
-            await _repository.Delete(id);
-
-            return true;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<User> GetUser(long id)
         {
-            return await _repository.GetById(id);
+            return await _unitOfWork.UserRepository.GetById(id);
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _repository.GetAll();
+            return await _unitOfWork.UserRepository.GetAll();
+        }
+
+        public async Task addUser(User user)
+        {
+            await _unitOfWork.UserRepository.Add(user);
+        }
+
+        public async Task<bool> deleterUser(long id)
+        {
+            await _unitOfWork.UserRepository.Delete(id);
+            return true;
         }
 
         public async Task<bool> updateUser(User user)
         {
-            await _repository.Update(user);
+            await _unitOfWork.UserRepository.Update(user);
             return true;
         }
     }
