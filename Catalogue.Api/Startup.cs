@@ -6,6 +6,7 @@ using AutoMapper;
 using Catalogue.Core.Interfaces;
 using Catalogue.Core.Services;
 using Catalogue.Infrastructure.Data;
+using Catalogue.Infrastructure.Filters;
 using Catalogue.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +34,9 @@ namespace Catalogue.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddControllers();
+            services.AddControllers(options => {
+                options.Filters.Add<GlobalExceptionFilter>();
+            });
 
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
