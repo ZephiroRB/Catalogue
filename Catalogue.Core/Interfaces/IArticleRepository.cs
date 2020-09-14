@@ -7,19 +7,8 @@ using System.Threading.Tasks;
 
 namespace Catalogue.Core.Interfaces
 {
-    public interface IArticleRepository
+    public interface IArticleRepository : IRepository<Article>
     {
-      
-
-        Task<IEnumerable<Article>> GetArticles();
-
-        Task<Article> GetArticle(long id);
-
-        Task addArticle(Article article);
-
-        Task<bool> updateArticle(Article article);
-
-        Task<bool> deleterArticle(long id);
-
+        Task<IEnumerable<Article>> GetArticlesByUser(long id);
     }
 }

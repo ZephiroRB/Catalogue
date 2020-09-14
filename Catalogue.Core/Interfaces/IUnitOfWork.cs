@@ -8,7 +8,7 @@ namespace Catalogue.Core.Interfaces
     {
         IRepository<User> UserRepository { get; }
 
-        IRepository<Article> ArticleRepository { get; }
+        IArticleRepository ArticleRepository { get; }
 
         void SaveChanges();
 

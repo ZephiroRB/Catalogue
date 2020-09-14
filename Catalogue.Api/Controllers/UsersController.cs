@@ -25,9 +25,9 @@ namespace Catalogue.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public IActionResult GetUsers()
         {
-            var users = await _userService.GetUsers();
+            var users = _userService.GetUsers();
 
             /* With AutoMapper*/
             var usersDTO = _mapper.Map<IEnumerable<UserDTO>>(users);

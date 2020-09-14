@@ -1,5 +1,6 @@
 ﻿using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,14 +20,24 @@ namespace Catalogue.Core.Services
             return await _unitOfWork.UserRepository.GetById(id);
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            return await _unitOfWork.UserRepository.GetAll();
+            return _unitOfWork.UserRepository.GetAll();
         }
 
         public async Task addUser(User user)
         {
+            char[] padding = { '=' };
+
+            string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+            user.Token = token.TrimEnd(padding).Replace('+', '-').Replace('/', '_');
+
+            user.CreatedAt = DateTime.Now;
+            user.UpdatedAt = DateTime.Now;
+
             await _unitOfWork.UserRepository.Add(user);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<bool> deleterUser(long id)
@@ -37,7 +48,9 @@ namespace Catalogue.Core.Services
 
         public async Task<bool> updateUser(User user)
         {
-            await _unitOfWork.UserRepository.Update(user);
+            user.UpdatedAt = DateTime.Now;
+            _unitOfWork.UserRepository.Update(user);
+            await  _unitOfWork.SaveChangesAsync();
             return true;
         }
     }
