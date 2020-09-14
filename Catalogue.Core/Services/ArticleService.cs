@@ -1,4 +1,5 @@
 ﻿using Catalogue.Core.Entities;
+using Catalogue.Core.Exceptions;
 using Catalogue.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -33,27 +34,37 @@ namespace Catalogue.Core.Services
 
             if (user == null)
             {
-                throw new Exception("User doesn't  exist");
+                throw new BusinessException("User doesn't  exist");
             }
 
             var userArticles = await _unitOfWork.ArticleRepository.GetArticlesByUser(article.UserId);
 
             if (userArticles.Count() < 10)
             {
-                var lastArticle = userArticles.LastOrDefault();
+                var lastArticle = userArticles.OrderByDescending(x=> x.CreatedAt).LastOrDefault();
 
-                if ((lastArticle.CreatedAt - DateTime.Now).TotalDays < 7)
+                if ((DateTime.Now - lastArticle.CreatedAt).TotalDays < 7)
                 {
-                    throw new Exception("You are not able to publish the post");
+                    throw new BusinessException("You are not able to publish the post");
                 }
             }
 
             if (article.Description.Contains("Sexo"))
             {
-                throw new Exception("Content not allowed");
+                throw new BusinessException("Content not allowed");
             }
 
+            char[] padding = { '=' };
+
+            string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+            article.Token = token.TrimEnd(padding).Replace('+', '-').Replace('/', '_');
+
+            article.CreatedAt = DateTime.Now;
+            article.UpdatedAt = DateTime.Now;
+
             await _unitOfWork.ArticleRepository.Add(article);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<bool> deleterArticle(long id)
@@ -64,6 +75,7 @@ namespace Catalogue.Core.Services
 
         public async Task<bool> updateArticle(Article article)
         {
+            article.UpdatedAt = DateTime.Now;
             _unitOfWork.ArticleRepository.Update(article);
             await _unitOfWork.SaveChangesAsync();
             return true;
