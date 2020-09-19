@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Catalogue.Api.Responses;
 using Catalogue.Core.DTOs;
 using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +45,9 @@ namespace Catalogue.Api.Controllers
                 CreatedAt = u.CreatedAt
             });*/
 
-            return Ok(usersDTO);
+            var response = new ApiResponse<IEnumerable<UserDTO>>(usersDTO);
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -65,6 +69,8 @@ namespace Catalogue.Api.Controllers
                 CreatedAt = user.CreatedAt
             };*/
 
+            var response = new ApiResponse<UserDTO>(userDTO);
+
             return Ok(userDTO);
         }
 
@@ -85,9 +91,12 @@ namespace Catalogue.Api.Controllers
             };*/
 
             await _userService.addUser(user);
-            return Ok(user);
-        }
 
+            userDTO = _mapper.Map<UserDTO>(user);
+
+            var response = new ApiResponse<UserDTO>(userDTO);
+            return Ok(response);
+        }
 
         [HttpPut]
         public async Task<IActionResult> updateUser(long id, UserDTO userDTO)
@@ -106,8 +115,11 @@ namespace Catalogue.Api.Controllers
                 CreatedAt = userDTO.CreatedAt
             };*/
 
-            await _userService.updateUser(user);
-            return Ok(user);
+            var result = await _userService.updateUser(user);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
         }
 
 
@@ -115,9 +127,10 @@ namespace Catalogue.Api.Controllers
         public async Task<IActionResult> deleteUser(long id)
         {
             var result = await _userService.deleterUser(id);
-            return Ok(result);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
         }
-
-
     }
 }
