@@ -41,6 +41,7 @@ namespace Catalogue.Api
             services.AddDbContext<CatalogueContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             // registers Services
+            services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<IUserService, UserService>();
 
             // registers Repositories
