@@ -71,7 +71,7 @@ namespace Catalogue.Api.Controllers
 
             var response = new ApiResponse<UserDTO>(userDTO);
 
-            return Ok(userDTO);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -95,6 +95,7 @@ namespace Catalogue.Api.Controllers
             userDTO = _mapper.Map<UserDTO>(user);
 
             var response = new ApiResponse<UserDTO>(userDTO);
+
             return Ok(response);
         }
 
@@ -121,7 +122,6 @@ namespace Catalogue.Api.Controllers
 
             return Ok(response);
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteUser(long id)
