@@ -1,6 +1,7 @@
 ﻿using Catalogue.Core.Entities;
 using Catalogue.Core.Exceptions;
 using Catalogue.Core.Interfaces;
+using Catalogue.Core.QueryFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,31 @@ namespace Catalogue.Core.Services
             return await _unitOfWork.ArticleRepository.GetById(id);
         }
 
-        public IEnumerable<Article> GetArticles()
+        public IEnumerable<Article> GetArticles(ArticleQueryFilter filters)
         {
-            return _unitOfWork.ArticleRepository.GetAll();
+            var articles = _unitOfWork.ArticleRepository.GetAll();
+
+            if (filters.UserId != null)
+            {
+                articles = articles.Where(x => x.UserId == filters.UserId);
+            }
+
+            if (filters.CreatedAt != null)
+            {
+                articles = articles.Where(x => x.CreatedAt.ToShortDateString() == filters.CreatedAt?.ToShortDateString());
+            }
+
+            if (filters.Description != null)
+            {
+                articles = articles.Where(x => x.Description.ToLower().Contains(filters.Description.ToLower()));
+            }
+
+            return articles;
         }
 
         public async Task addArticle(Article article)
         {
-            var user = _unitOfWork.UserRepository.GetById(article.UserId);
+            /*var user = await _unitOfWork.UserRepository.GetById(article.UserId);
 
             if (user == null)
             {
@@ -39,7 +57,7 @@ namespace Catalogue.Core.Services
 
             var userArticles = await _unitOfWork.ArticleRepository.GetArticlesByUser(article.UserId);
 
-            if (userArticles.Count() < 10)
+            if (userArticles.Count() < 10 && userArticles.Count() > 0)
             {
                 var lastArticle = userArticles.OrderByDescending(x=> x.CreatedAt).LastOrDefault();
 
@@ -52,7 +70,7 @@ namespace Catalogue.Core.Services
             if (article.Description.Contains("Sexo"))
             {
                 throw new BusinessException("Content not allowed");
-            }
+            }*/
 
             char[] padding = { '=' };
 

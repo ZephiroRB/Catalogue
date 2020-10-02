@@ -14,7 +14,7 @@ namespace Catalogue.Infrastructure.Filters
         public void OnException(ExceptionContext context)
         {
             if (context.Exception.GetType() == typeof(BusinessException))
-            {
+            {   
                 var exception = (BusinessException)context.Exception;
 
                 var validation = new
@@ -33,8 +33,6 @@ namespace Catalogue.Infrastructure.Filters
                 context.Result = new BadRequestObjectResult(json);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 context.ExceptionHandled = true;
-                
-
             }
         }
     }

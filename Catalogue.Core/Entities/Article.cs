@@ -9,8 +9,6 @@ namespace Catalogue.Core.Entities
         public string Token { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-       
-
         public virtual User User { get; set; }
     }
 }
