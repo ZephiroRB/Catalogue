@@ -13,6 +13,10 @@ namespace Catalogue.Infrastructure.Mappings
         {
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
+
+            CreateMap<Article, ArticleDTO>();
+            CreateMap<ArticleDTO, Article>();
+
         }
     }
 }
