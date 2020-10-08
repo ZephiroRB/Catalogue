@@ -23,7 +23,8 @@ namespace Catalogue.Infrastructure.Repositories
         }
 
         public IEnumerable<T> GetAll()
-        {
+        {   
+            // consulta diferida es decir no se ejecuta de golpe
             return _entities.AsEnumerable();
         }
 
