@@ -2,6 +2,7 @@
 using Catalogue.Core.Exceptions;
 using Catalogue.Core.Interfaces;
 using Catalogue.Core.QueryFilters;
+using Catalogue.Core.CustomEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,7 @@ namespace Catalogue.Core.Services
         {
             return await _unitOfWork.ArticleRepository.GetById(id);
         }
-
-        public IEnumerable<Article> GetArticles(ArticleQueryFilter filters)
+        public PagedList<Article> GetArticles(ArticleQueryFilter filters)
         {
             var articles = _unitOfWork.ArticleRepository.GetAll();
 
@@ -42,8 +42,10 @@ namespace Catalogue.Core.Services
             {
                 articles = articles.Where(x => x.Description.ToLower().Contains(filters.Description.ToLower()));
             }
+            
+            var pagedArticles = PagedList<Article>.Create(articles, filters.PageNumber, filters.PageSize);
 
-            return articles;
+            return pagedArticles;
         }
 
         public async Task addArticle(Article article)

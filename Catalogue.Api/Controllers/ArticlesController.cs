@@ -8,6 +8,7 @@ using Catalogue.Core.Entities;
 using Catalogue.Core.Interfaces;
 using Catalogue.Core.QueryFilters;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Catalogue.Api.Controllers
 {
@@ -32,6 +33,18 @@ namespace Catalogue.Api.Controllers
             var articlesDTO = _mapper.Map<IEnumerable<ArticleDTO>>(articles);
 
             var response = new ApiResponse<IEnumerable<ArticleDTO>>(articlesDTO);
+            
+            var metadata = new 
+            {
+                articles.TotalCount,
+                articles.PageSize,
+                articles.CurrentPage,
+                articles.TotalPages,
+                articles.HasNextPage,
+                articles.HasPreviousPage
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata) );
 
             return Ok(response);
         }
